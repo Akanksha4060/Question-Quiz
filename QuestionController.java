@@ -54,6 +54,10 @@ public class QuestionController {
 		return "redirect:/allQuestions";
 	}
 	
-	//to update record
+	// want to update question by id
+	@PutMapping("update/{id}")
+	public ResponseEntity<String> updateQuestion(@PathVariable int id, @RequestBody Question updatedQuestion) {
+		return questionService.updateQuestion(id, updatedQuestion);
+	}
 	
 }
