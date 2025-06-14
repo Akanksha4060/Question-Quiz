@@ -1,25 +1,35 @@
-package com.example.demo.controller;
+package com.quiz.Question.Quiz.Controller;
 
+import com.quiz.Question.Quiz.Model.QuestionWrapper;
+import com.quiz.Question.Quiz.Model.Response;
+import com.quiz.Question.Quiz.Service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.service.QuizService;
+import java.util.List;
 
 @RestController
-@RequestMapping("quiz")
+@RequestMapping("quiz") //request coming for quiz this controller will handle it
 public class QuizController {
-	
-	@Autowired
-	QuizService quizService;
-	
-	@PostMapping("create")                     //@RequestParam to accept parameter
-	public ResponseEntity<String> createQuiz(@RequestParam String category, @RequestParam int numQue, @RequestParam String title){
-		return quizService.createQuiz(category,numQue,title);
-	}
 
+    @Autowired
+    QuizService quizService;
+
+    //want to create quiz
+    @PostMapping("create")                   //if we want to accept url parameter
+    public ResponseEntity<String> createQuiz(@RequestParam String category,@RequestParam int numQ,@RequestParam String title){
+        return quizService.createQuiz(category,numQ,title);
+    }
+
+    //want quiz question
+    @GetMapping("get/{id}")
+    public ResponseEntity<List<QuestionWrapper>> getQuizQuestion(@PathVariable int id){
+        return quizService.getQuizQuestion(id);
+    }
+
+    @PostMapping("submit/{id}")
+    public ResponseEntity<Integer> submitQuiz(@PathVariable int id,@RequestBody List<Response> responses){
+        return quizService.calculateResult(id,responses);
+    }
 }
