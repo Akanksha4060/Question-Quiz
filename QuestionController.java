@@ -1,63 +1,58 @@
-package com.example.demo.controller;
+package com.quiz.Question.Quiz.Controller;
+
+import com.quiz.Question.Quiz.Model.Question;
+import com.quiz.Question.Quiz.Service.QuestionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.example.demo.model.Question;
-import com.example.demo.service.QuestionService;
-
 @RestController
-@RequestMapping("question")
+@RequestMapping("question")  //request coming for question this controller will handle it
 public class QuestionController {
 
-	@Autowired
-	QuestionService questionService;
-	
-	//to get all record
-	/* --NORMALLY RECORDS WILL DISPLAY
-	@GetMapping("allQuestions")
-	public List<Question> getallQuestions() {
-		return questionService.getAllQuestions();
-	}*/
-	
-	//IF WE PROVIDE WRONG INPUT THEN IT WILL GIVE US EXCEPTION
-	@GetMapping("allQuestions")
-	public ResponseEntity<List<Question>>getallQuestions() {
-		return questionService.getAllQuestions();
-	}
-	
-	//on the basis of category we mentioned, we get data
-	@GetMapping("category/{cat}")
-	public List<Question> getQuestionsByCategory(@PathVariable String cat){
-		return questionService.getQuestionByCategory(cat);
-	}
-	
-	//to add record 
-	@PostMapping("add")
-	public String addQuestion(@RequestBody Question question) {
-		return questionService.addQuestion(question);
-	}	
-	
-	//to delete record
-	@DeleteMapping("delete/{id}")
-	public String deleteQuestion(@PathVariable int id) {
-		questionService.deleteQuestion(id);
-		return "redirect:/allQuestions";
-	}
-	
-	// want to update question by id
-	@PutMapping("update/{id}")
-	public ResponseEntity<String> updateQuestion(@PathVariable int id, @RequestBody Question updatedQuestion) {
-		return questionService.updateQuestion(id, updatedQuestion);
-	}
-	
+    //object of QuestionService
+    @Autowired
+    QuestionService questionService;
+
+    //to get all question
+    @GetMapping("allQuestions")
+    public List<Question> getAllQuestion(){    //we are returning objects
+        return questionService.getAllQuestions(); //we are requesting for get all question from service
+    }
+
+    //want questions by category
+    @GetMapping("category/{cat}") ///{cat} we gonna mention category/topic
+    //whatever value o variable cat will assign to String category
+    //if variable same no need to mention inside PathVariable("cat")
+    public List<Question> getQuestionByCategory(@PathVariable("cat") String category){
+        return questionService.getQuestionByCategory(category);
+    }
+
+    //want question by id
+    @GetMapping("id/{id}")
+    public Question getQuestionById(@PathVariable int id){
+        return questionService.getQuestionById(id);
+    }
+
+    //want to add questions
+    @PostMapping("add")
+    public String addQuestion(@RequestBody Question que){
+        return questionService.addQuestion(que);
+    }
+
+    //want to delete by id
+    @DeleteMapping("delete/{id}")
+    public String deleteQuestion(@PathVariable int id){
+        questionService.deleteById(id);
+        return "redirect:/allQuestions";
+    }
+    //want to update question by id
+    @PutMapping("update/{id}")
+    public ResponseEntity<String> updateQuestion(@PathVariable int id, @RequestBody Question updatedQuestion) {
+        return questionService.updateQuestion(id, updatedQuestion);
+    }
+
+
 }
