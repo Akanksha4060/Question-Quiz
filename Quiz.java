@@ -1,42 +1,19 @@
-package com.example.demo.model;
+package com.quiz.Question.Quiz.Model;
+
+import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-
 @Entity
+@Data
 public class Quiz {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	private String title;
-	@ManyToMany
-	private List<Question> question;
-	@Override
-	public String toString() {
-		return "Quiz [id=" + id + ", title=" + title + ", question=" + question + "]";
-	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public List<Question> getQuestion() {
-		return question;
-	}
-	public void setQuestion(List<Question> question) {
-		this.question = question;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String title;
+
+    @ManyToMany   //we have to do mapping otherwise it will give error
+    private List<Question> questions;
 }
